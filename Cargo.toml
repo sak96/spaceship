@@ -1,0 +1,16 @@
+[package]
+name = "spaceship"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+bevy = "0.14.2"
+
+
+# don't optimize game code for debug mode
+[profile.dev] 
+opt-level = 1
+
+# optimize libraries code for debug mode
+[profile.dev.package."*"]
+opt-level = 3
