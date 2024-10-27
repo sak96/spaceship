@@ -1,4 +1,5 @@
 use bevy::prelude::*;
+mod camera;
 mod debug;
 mod movement;
 mod spaceship;
@@ -10,5 +11,6 @@ fn main() {
         .add_plugins(spaceship::SpaceshipPlugin)
         .add_plugins(movement::MovementPlugin)
         .add_plugins(debug::DebugPlugin)
+        .add_plugins(camera::CameraPlugin)
         .run();
 }
