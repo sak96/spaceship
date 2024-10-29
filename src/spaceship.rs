@@ -19,9 +19,7 @@ struct SpaceshipBundle {
 
 fn spawn_spaceship(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands.spawn(SpaceshipBundle {
-        velocity: Velocity {
-            value: START_VELOCITY,
-        },
+        velocity: Velocity(START_VELOCITY),
         model: SceneBundle {
             scene: asset_server.load("Spaceship.glb#Scene0"),
             transform: Transform::from_translation(START_TRANSLATION),
