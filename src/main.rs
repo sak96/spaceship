@@ -1,4 +1,5 @@
 use bevy::prelude::*;
+mod asteroid;
 mod camera;
 mod debug;
 mod movement;
@@ -12,5 +13,6 @@ fn main() {
         .add_plugins(movement::MovementPlugin)
         .add_plugins(debug::DebugPlugin)
         .add_plugins(camera::CameraPlugin)
+        .add_plugins(asteroid::AsteroidPlugin)
         .run();
 }

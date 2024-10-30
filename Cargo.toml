@@ -5,10 +5,10 @@ edition = "2021"
 
 [dependencies]
 bevy = "0.14.2"
-
+rand = "0.8.5"
 
 # don't optimize game code for debug mode
-[profile.dev] 
+[profile.dev]
 opt-level = 1
 
 # optimize libraries code for debug mode
