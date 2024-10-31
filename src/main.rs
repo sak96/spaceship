@@ -1,4 +1,5 @@
 use bevy::prelude::*;
+mod asset_loader;
 mod asteroid;
 mod camera;
 mod debug;
@@ -14,5 +15,6 @@ fn main() {
         .add_plugins(debug::DebugPlugin)
         .add_plugins(camera::CameraPlugin)
         .add_plugins(asteroid::AsteroidPlugin)
+        .add_plugins(asset_loader::AssetLoaderPlugin)
         .run();
 }

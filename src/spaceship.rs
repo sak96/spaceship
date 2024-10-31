@@ -1,3 +1,4 @@
+use crate::asset_loader::SceneAssets;
 use crate::movement::{Acceleration, MovementObjectBundle, Velocity};
 use bevy::prelude::*;
 
@@ -12,12 +13,12 @@ impl Plugin for SpaceshipPlugin {
     }
 }
 
-fn spawn_spaceship(mut commands: Commands, asset_server: Res<AssetServer>) {
+fn spawn_spaceship(mut commands: Commands, scene_assets: Res<SceneAssets>) {
     commands.spawn(MovementObjectBundle {
         acceleration: Acceleration(Vec3::ZERO),
         velocity: Velocity(START_VELOCITY),
         model: SceneBundle {
-            scene: asset_server.load("Spaceship.glb#Scene0"),
+            scene: scene_assets.spaceship.clone(),
             transform: Transform::from_translation(START_TRANSLATION),
             ..default()
         },
