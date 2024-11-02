@@ -8,7 +8,10 @@ mod spaceship;
 
 fn main() {
     App::new()
-        .add_plugins(DefaultPlugins)
+        .add_plugins(DefaultPlugins.set(AssetPlugin {
+            meta_check: bevy::asset::AssetMetaCheck::Never,
+            ..default()
+        }))
         // user plugins
         .add_plugins(spaceship::SpaceshipPlugin)
         .add_plugins(movement::MovementPlugin)
