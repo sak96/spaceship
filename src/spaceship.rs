@@ -2,7 +2,6 @@ use crate::asset_loader::SceneAssets;
 use crate::movement::{Acceleration, MovementObjectBundle, Velocity};
 use bevy::prelude::*;
 
-const START_TRANSLATION: Vec3 = Vec3::new(0.0, 0.0, -20.0);
 const SPACESHIP_SPEED: f32 = 25.0;
 const SPACESHIP_ROTATION_SPEED: f32 = 2.5;
 const SPACESHIP_ROLL_SPEED: f32 = 2.5;
@@ -27,13 +26,16 @@ pub struct SpaceShip;
 pub struct SpaceShipMissile;
 
 fn spawn_spaceship(mut commands: Commands, scene_assets: Res<SceneAssets>) {
+    let mut transfrom = Transform::from_translation(Vec3::ZERO);
+    transfrom.rotate_x(std::f32::consts::PI / 2.0);
+    transfrom.rotate_local_y(std::f32::consts::PI);
     commands.spawn((
         MovementObjectBundle {
             acceleration: Acceleration(Vec3::ZERO),
             velocity: Velocity(Vec3::ZERO),
             model: SceneBundle {
                 scene: scene_assets.spaceship.clone(),
-                transform: Transform::from_translation(START_TRANSLATION),
+                transform: transfrom,
                 ..default()
             },
         },
@@ -75,8 +77,8 @@ fn spaceship_movement_controls(
     *velocity = Velocity(-transform.forward() * movement * SPACESHIP_SPEED);
 
     // rotate reset the existing rotate; rotate local rotates on top of existing rotate
-    transform.rotate_y(rotation * time.delta_seconds() * SPACESHIP_ROTATION_SPEED);
-    transform.rotate_local_z(roll * time.delta_seconds() * SPACESHIP_ROLL_SPEED);
+    transform.rotate_z(rotation * time.delta_seconds() * SPACESHIP_ROTATION_SPEED);
+    transform.rotate_y(roll * time.delta_seconds() * SPACESHIP_ROLL_SPEED);
 }
 
 fn spaceship_weapon_controls(
