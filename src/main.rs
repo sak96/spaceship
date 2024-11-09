@@ -2,6 +2,7 @@ use bevy::prelude::*;
 mod asset_loader;
 mod asteroid;
 mod camera;
+mod collider;
 mod movement;
 mod spaceship;
 
@@ -17,5 +18,6 @@ fn main() {
         .add_plugins(camera::CameraPlugin)
         .add_plugins(asteroid::AsteroidPlugin)
         .add_plugins(asset_loader::AssetLoaderPlugin)
+        .add_plugins(collider::CollisionPlugin)
         .run();
 }

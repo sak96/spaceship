@@ -1,12 +1,15 @@
 use crate::asset_loader::SceneAssets;
+use crate::collider::Collider;
 use crate::movement::{Acceleration, MovementObjectBundle, Velocity};
 use bevy::prelude::*;
 
 const SPACESHIP_SPEED: f32 = 25.0;
 const SPACESHIP_ROTATION_SPEED: f32 = 2.5;
 const SPACESHIP_ROLL_SPEED: f32 = 2.5;
+const SPACESHIP_RADIUS: f32 = 2.5;
 const MISSILE_SPEED: f32 = 50.0;
 const MISSLE_FORWARD_SPAWN_SCALAR: f32 = 8.0;
+const MISSLE_RADIUS: f32 = 2.5;
 
 pub struct SpaceshipPlugin;
 
@@ -33,6 +36,7 @@ fn spawn_spaceship(mut commands: Commands, scene_assets: Res<SceneAssets>) {
         MovementObjectBundle {
             acceleration: Acceleration(Vec3::ZERO),
             velocity: Velocity(Vec3::ZERO),
+            collider: Collider::new(SPACESHIP_RADIUS),
             model: SceneBundle {
                 scene: scene_assets.spaceship.clone(),
                 transform: transfrom,
@@ -93,6 +97,7 @@ fn spaceship_weapon_controls(
             MovementObjectBundle {
                 acceleration: Acceleration(Vec3::ZERO),
                 velocity: Velocity(-transform.forward() * MISSILE_SPEED),
+                collider: Collider::new(MISSLE_RADIUS),
                 model: SceneBundle {
                     scene: scene_assets.missile.clone(),
                     transform: Transform::from_translation(
