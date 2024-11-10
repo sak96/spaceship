@@ -1,7 +1,6 @@
 use crate::asset_loader::SceneAssets;
 use crate::collider::Collider;
 use crate::movement::{Acceleration, MovementObjectBundle, Velocity};
-use crate::schedule::InGameSet;
 use bevy::prelude::*;
 use rand::Rng;
 use std::ops::Range;
@@ -30,11 +29,7 @@ impl Plugin for AsteroidPlugin {
         })
         .add_systems(
             Update,
-            handle_asteroid_collision.in_set(InGameSet::CollisionDetection),
-        )
-        .add_systems(
-            Update,
-            (spawn_asteroid).in_set(InGameSet::SpawnDespawnEntities),
+            (spawn_asteroid).in_set(crate::schedule::InGameSet::SpawnDespawnEntities),
         );
     }
 }
@@ -72,16 +67,5 @@ fn spawn_asteroid(
             },
             Asteroid,
         ));
-    }
-}
-
-fn handle_asteroid_collision(
-    mut commands: Commands,
-    query: Query<(Entity, &Collider), With<Asteroid>>,
-) {
-    for (entity, collider) in query.iter() {
-        if collider.entities.iter().any(|e| query.get(*e).is_err()) {
-            commands.entity(entity).despawn_recursive()
-        }
     }
 }

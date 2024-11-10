@@ -19,7 +19,14 @@ pub struct CollisionPlugin;
 
 impl Plugin for CollisionPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Update, collision_detection);
+        app.add_systems(Update, collision_detection).add_systems(
+            Update,
+            (
+                handle_collision::<crate::asteroid::Asteroid>,
+                handle_collision::<crate::spaceship::SpaceShip>,
+            )
+                .in_set(crate::schedule::InGameSet::CollisionDetection),
+        );
     }
 }
 
@@ -52,5 +59,16 @@ fn collision_detection(mut query: Query<(Entity, &GlobalTransform, &mut Collider
 
     for ((_, _, mut collider), colliding_entities) in query.iter_mut().zip(collision_map) {
         collider.entities = colliding_entities;
+    }
+}
+
+fn handle_collision<T: Component>(
+    mut commands: Commands,
+    query: Query<(Entity, &Collider), With<T>>,
+) {
+    for (entity, collider) in query.iter() {
+        if collider.entities.iter().any(|e| query.get(*e).is_err()) {
+            commands.entity(entity).despawn_recursive()
+        }
     }
 }
