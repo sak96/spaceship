@@ -5,7 +5,6 @@ use bevy::prelude::*;
 
 const SPACESHIP_SPEED: f32 = 25.0;
 const SPACESHIP_ROTATION_SPEED: f32 = 2.5;
-const SPACESHIP_ROLL_SPEED: f32 = 2.5;
 const SPACESHIP_RADIUS: f32 = 2.5;
 const MISSILE_SPEED: f32 = 50.0;
 const MISSLE_FORWARD_SPAWN_SCALAR: f32 = 8.0;
@@ -69,20 +68,11 @@ fn spaceship_movement_controls(
         0.0
     };
 
-    let roll = if keyboard_input.pressed(KeyCode::ShiftLeft) {
-        -1.0
-    } else if keyboard_input.pressed(KeyCode::ControlLeft) {
-        1.0
-    } else {
-        0.0
-    };
-
     // minus is added due to model co-ordinates
     *velocity = Velocity(-transform.forward() * movement * SPACESHIP_SPEED);
 
-    // rotate reset the existing rotate; rotate local rotates on top of existing rotate
+    // rotate reset the existing rotate
     transform.rotate_z(rotation * time.delta_seconds() * SPACESHIP_ROTATION_SPEED);
-    transform.rotate_y(roll * time.delta_seconds() * SPACESHIP_ROLL_SPEED);
 }
 
 fn spaceship_weapon_controls(
