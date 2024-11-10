@@ -1,6 +1,7 @@
 use crate::asset_loader::SceneAssets;
 use crate::collider::Collider;
 use crate::movement::{Acceleration, MovementObjectBundle, Velocity};
+use crate::schedule::InGameSet;
 use bevy::prelude::*;
 
 const SPACESHIP_SPEED: f32 = 25.0;
@@ -16,7 +17,9 @@ impl Plugin for SpaceshipPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(Startup, spawn_spaceship).add_systems(
             Update,
-            (spaceship_movement_controls, spaceship_weapon_controls),
+            (spaceship_movement_controls, spaceship_weapon_controls)
+                .chain()
+                .in_set(InGameSet::UserInput),
         );
     }
 }
@@ -51,7 +54,9 @@ fn spaceship_movement_controls(
     keyboard_input: Res<ButtonInput<KeyCode>>,
     time: Res<Time>,
 ) {
-    let (mut transform, mut velocity) = query.single_mut();
+    let Ok((mut transform, mut velocity)) = query.get_single_mut() else {
+        return;
+    };
     let movement = if keyboard_input.any_pressed([KeyCode::KeyW, KeyCode::ArrowUp]) {
         1.0
     } else if keyboard_input.any_pressed([KeyCode::KeyS, KeyCode::ArrowDown]) {

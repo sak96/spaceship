@@ -1,6 +1,7 @@
 use crate::asset_loader::SceneAssets;
 use crate::collider::Collider;
 use crate::movement::{Acceleration, MovementObjectBundle, Velocity};
+use crate::schedule::InGameSet;
 use bevy::prelude::*;
 use rand::Rng;
 use std::ops::Range;
@@ -27,7 +28,14 @@ impl Plugin for AsteroidPlugin {
         app.insert_resource(AsteroidSpawnTimer {
             timer: Timer::from_seconds(SPAWN_TIME_SECONDS, TimerMode::Repeating),
         })
-        .add_systems(Update, (spawn_asteroid, handle_asteroid_collision).chain());
+        .add_systems(
+            Update,
+            handle_asteroid_collision.in_set(InGameSet::CollisionDetection),
+        )
+        .add_systems(
+            Update,
+            (spawn_asteroid).in_set(InGameSet::SpawnDespawnEntities),
+        );
     }
 }
 
